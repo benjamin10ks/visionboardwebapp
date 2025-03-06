@@ -1,10 +1,12 @@
-import VisionBoard from "@/components/VisionBoard";
+import Card from "@/components/Card";
 import ExpansiveCanvas from "@/components/ExpansiveCanvas";
 
 export default function Home() {
   return (
-    <main className="flex items-center justify-center h-screen">
-        <VisionBoard />
+    <main>
+      <ExpansiveCanvas>
+        <Card />
+      </ExpansiveCanvas>
     </main>
   );
 }
