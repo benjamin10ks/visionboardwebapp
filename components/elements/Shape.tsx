@@ -32,7 +32,7 @@ export default function Shape({
   onClick,
 }: ShapeProps) {
   const [position, setPosition] = useState({ x, y });
-  const [size, setSize] = useState({ width, height });
+  const [size] = useState({ width, height });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const shapeRef = useRef<HTMLDivElement>(null);
@@ -120,7 +120,7 @@ export default function Shape({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, handleMouseMove]);
 
   return (
     <div

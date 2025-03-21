@@ -4,10 +4,9 @@ import { useSocket } from "./LiveblocksProvider";
 
 interface CanvasProps {
   children: ReactNode;
-  roomId: string;
 }
 
-export default function Canvas({ children, roomId }: CanvasProps) {
+export default function Canvas({ children }: CanvasProps) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [dragging, setDragging] = useState(false);

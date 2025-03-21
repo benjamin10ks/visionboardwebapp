@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { useSocket } from "../LiveblocksProvider";
 
 export interface ImageProps {
@@ -14,9 +15,8 @@ export interface ImageProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export default function Image({
+export default function ImageElement({
   id,
-  type,
   x,
   y,
   width,
@@ -26,7 +26,7 @@ export default function Image({
   onClick,
 }: ImageProps) {
   const [position, setPosition] = useState({ x, y });
-  const [size, setSize] = useState({ width, height });
+  const [size] = useState({ width, height });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ export default function Image({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, handleMouseMove]);
 
   return (
     <div
@@ -101,11 +101,12 @@ export default function Image({
       }}
       onMouseDown={handleMouseDown}
     >
-      <img
+      <Image
         src={src}
-        alt="User uploaded"
-        className="w-full h-full object-cover"
-        draggable={false}
+        alt="Design element"
+        fill
+        style={{ objectFit: "cover" }}
+        priority
       />
       
       {/* Resize handles - only show when selected */}

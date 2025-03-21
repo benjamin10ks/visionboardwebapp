@@ -17,7 +17,6 @@ export interface TextProps {
 
 export default function Text({
   id,
-  type,
   x,
   y,
   text,
@@ -128,7 +127,7 @@ export default function Text({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, handleMouseMove]);
 
   return (
     <div

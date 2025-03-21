@@ -136,7 +136,7 @@ export default function DesignWorkspace({ roomId }: DesignWorkspaceProps) {
       } else if (activeToolType === "text") {
         const newText: TextProps = {
           id: newElementId,
-          type: "text" as any, // Not in interface but helps with type discrimination
+          type: "text",
           x,
           y,
           text: "Double click to edit",
@@ -167,7 +167,7 @@ export default function DesignWorkspace({ roomId }: DesignWorkspaceProps) {
         
         const newImage: ImageProps = {
           id: newElementId,
-          type: "image" as any, // Not in interface but helps with type discrimination
+          type: "image",
           x: rect.width / 2 - 100,
           y: rect.height / 2 - 100,
           width: 200,
@@ -186,7 +186,7 @@ export default function DesignWorkspace({ roomId }: DesignWorkspaceProps) {
   );
   
   // Handle element selection
-  const handleElementSelect = useCallback((id: string, e: React.MouseEvent) => {
+  const handleElementSelect = useCallback((id: string, e: React.MouseEvent<Element>) => {
     e.stopPropagation();
     setSelectedElementId(id);
   }, []);
@@ -401,7 +401,7 @@ export default function DesignWorkspace({ roomId }: DesignWorkspaceProps) {
       
       {/* Main workspace area */}
       <div className="flex-1 relative overflow-hidden" ref={workspaceRef}>
-        <Canvas roomId={roomId}>
+        <Canvas>
           <div className="absolute top-0 left-0 min-w-[2000px] min-h-[2000px]" onClick={handleWorkspaceClick}>
             {/* Grid background */}
             <div className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-80" style={{ 
@@ -419,7 +419,7 @@ export default function DesignWorkspace({ roomId }: DesignWorkspaceProps) {
                 className="absolute pointer-events-none"
                 style={{ left: `${user.position.x}px`, top: `${user.position.y}px` }}
               >
-                <div className="w-4 h-4 bg-red-500 rounded-full opacity-50" />
+                <div className="w-4 h-4 bg-red-500 rounded-full opacity-50" aria-label="User cursor" />
               </div>
             ))}
           </div>

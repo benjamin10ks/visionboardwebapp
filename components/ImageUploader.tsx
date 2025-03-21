@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, forwardRef } from "react";
+import Image from "next/image";
 
 const ImageUploader = forwardRef<HTMLDivElement>((_, ref) => {
   const [image, setImage] = useState<string | null>(null);
@@ -32,7 +33,17 @@ const ImageUploader = forwardRef<HTMLDivElement>((_, ref) => {
       />
 
       {/* Display the uploaded image */}
-      {image && <img src={image} alt="Uploaded" className="w-64 h-64 object-cover rounded-md shadow-md" />}
+      {image && (
+        <div className="relative w-64 h-64">
+          <Image 
+            src={image} 
+            alt="Uploaded" 
+            fill
+            style={{ objectFit: "cover" }}
+            className="rounded-md shadow-md" 
+          />
+        </div>
+      )}
     </div>
   );
 });
