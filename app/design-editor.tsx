@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { SocketProvider } from "@/components/LiveblocksProvider";
 import DesignWorkspace from "@/components/DesignWorkspace";
 
 export default function DesignEditor() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [roomId, setRoomId] = useState<string>("");
   
   useEffect(() => {
@@ -27,13 +28,34 @@ export default function DesignEditor() {
     }
   }, [searchParams]);
   
+  // Handle "Create New Board" functionality
+  const createNewBoard = () => {
+    const newRoomId = uuidv4();
+    // Navigate to new URL with the fresh room ID
+    router.push(`/?room=${newRoomId}`);
+  };
+  
   if (!roomId) {
     return <div className="flex items-center justify-center h-full">Loading...</div>;
   }
   
   return (
-    <SocketProvider roomId={roomId}>
-      <DesignWorkspace roomId={roomId} />
-    </SocketProvider>
+    <div className="h-full flex flex-col">
+      <div className="bg-white border-b p-2 flex justify-between items-center">
+        <div className="font-bold text-lg">Figma Clone</div>
+        <button
+          onClick={createNewBoard}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Create New Board
+        </button>
+      </div>
+      
+      <div className="flex-1">
+        <SocketProvider roomId={roomId}>
+          <DesignWorkspace roomId={roomId} />
+        </SocketProvider>
+      </div>
+    </div>
   );
 } 

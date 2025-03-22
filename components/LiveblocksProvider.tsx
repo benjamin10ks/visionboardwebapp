@@ -23,8 +23,12 @@ export function SocketProvider({ children, roomId }: SocketProviderProps) {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
+    // Get socket URL from environment or use fallback
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 
+                       "https://your-socket-server-url.herokuapp.com";
+    
     // Initialize socket connection
-    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3001", {
+    const socketInstance = io(socketUrl, {
       query: { roomId },
     });
 
