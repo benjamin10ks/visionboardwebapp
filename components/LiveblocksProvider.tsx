@@ -23,13 +23,26 @@ export function SocketProvider({ children, roomId }: SocketProviderProps) {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    // Get socket URL from environment or use fallback
+    // Get socket URL from environment or use fallback for Render
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 
-                       "https://your-socket-server-url.herokuapp.com";
+                      "https://visionboardwebapp.onrender.com";
     
-    // Initialize socket connection
+    console.log("Connecting to socket server:", socketUrl);
+    
+    // Initialize socket connection with CORS and transport options
     const socketInstance = io(socketUrl, {
       query: { roomId },
+      transports: ['websocket', 'polling'],
+      withCredentials: false
+    });
+
+    // Listen for connection errors
+    socketInstance.on('connect_error', (err) => {
+      console.error('Socket connection error:', err.message);
+    });
+
+    socketInstance.on('connect', () => {
+      console.log('Socket connected successfully');
     });
 
     setSocket(socketInstance);
@@ -41,7 +54,12 @@ export function SocketProvider({ children, roomId }: SocketProviderProps) {
   }, [roomId]);
 
   if (!socket) {
-    return <div>Connecting to room...</div>;
+    return <div className="flex items-center justify-center h-full">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+        <p>Connecting to collaboration server...</p>
+      </div>
+    </div>;
   }
 
   return (

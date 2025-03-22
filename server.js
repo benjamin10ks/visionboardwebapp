@@ -9,9 +9,13 @@ const server = http.createServer((req, res) => {
 
 const io = new Server(server, {
   cors: {
+    // Allow connections from any origin for now - in production you might want to restrict this
     origin: '*',
     methods: ['GET', 'POST'],
+    credentials: false,
+    allowedHeaders: ['Content-Type', 'Authorization']
   },
+  transports: ['websocket', 'polling']
 });
 
 // Store active rooms and their elements
@@ -20,7 +24,7 @@ const rooms = new Map();
 io.on('connection', (socket) => {
   const { roomId } = socket.handshake.query;
   
-  console.log(`User connected to room ${roomId}`);
+  console.log(`User connected to room ${roomId} from ${socket.handshake.headers.origin || 'unknown origin'}`);
   socket.join(roomId);
 
   // Initialize room if it doesn't exist
